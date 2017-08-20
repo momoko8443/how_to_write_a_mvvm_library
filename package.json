@@ -1,0 +1,24 @@
+{
+  "name": "mvvm_demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mvvm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack  --progress --watch",
+    "start": "webpack-dev-server --open -d",
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.2.2",
+    "typescript": "^2.4.2",
+    "webpack": "^3.5.4",
+    "webpack-dev-server": "^2.7.1"
+  },
+  "dependencies": {
+    "codemirror": "^5.28.0"
+  }
+}

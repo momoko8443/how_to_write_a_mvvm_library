@@ -1,0 +1,97 @@
+<!DOCTYPE
+html>
+
+<html>
+
+<head>
+    <!--下面两个是使用Code Mirror必须引入的-->
+    <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="node_modules/codemirror/theme/monokai.css">
+    <script src="node_modules/codemirror/lib/codemirror.js"></script>
+    <script src="node_modules/codemirror/addon/edit/closetag.js"></script>
+    <script src="node_modules/codemirror/addon/fold/xml-fold.js"></script>
+    <script src="node_modules/codemirror/mode/xml/xml.js"></script>
+    <script src="node_modules/codemirror/mode/javascript/javascript.js"></script>
+    <script src="node_modules/codemirror/mode/css/css.js"></script>
+    <script src="
+    node_modules/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+
+    <style type=text/css>
+        .CodeMirror {
+            float: left;
+            width: 50%;
+            height: 500px;
+            border: 1px solid black;
+        }
+        
+        iframe {
+            width: 49%;
+            float: left;
+            height: 500px;
+            border: 1px solid black;
+            border-left: 0px;
+        }
+
+    </style>
+    <title>CodeMirrorTest</title>
+</head>
+
+<body>
+    <textarea id="code">
+<html>
+    <head>
+        <title>Mvvm</title>
+    </head>
+    <body>
+        <div>
+            <input type="text" sf-value="vm.message">
+            <h1 sf-innerText="vm.message"></h1>
+            <h2 sf-innerText="vm.message"></h2>
+            <h3 sf-innerText="vm.message"></h3>
+            <h4 sf-innerText="vm.message"></h4>
+            <button onclick="vm.buttonClickHandler();">click me</button>
+        </div>
+    </body>
+    <script src="dist/sf.js"></script>
+    <script>
+        var sf = new SegmentFault();
+        sf.registerViewModel("vm", new ViewModel());
+        sf.init();
+
+        function ViewModel() {
+            this.message = "hello, SegmentFault";
+            this.buttonClickHandler = function() {
+                this.message = "clicked: " + this.message;
+            }
+        }
+    </script>
+</html>
+    </textarea>
+    <iframe id=preview></iframe>
+</body>
+<script type="text/javascript">
+    var delay;
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode: 'text/html',
+        autoCloseTags: true,
+        lineNumbers: true,
+        theme: "monokai",
+        tabSize:2
+    });
+    editor.on("change", function() {
+        clearTimeout(delay);
+        delay = setTimeout(updatePreview, 300);
+    });
+
+    function updatePreview() {
+        var previewFrame = document.getElementById('preview');
+        var preview = previewFrame.contentDocument || previewFrame.contentWindow.document;
+        preview.open();
+        preview.write(editor.getValue());
+        preview.close();
+    }
+    setTimeout(updatePreview, 300);
+
+</script>
+
+</html>
