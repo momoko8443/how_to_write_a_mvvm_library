@@ -1,0 +1,25 @@
+<sf-component>
+    <style>
+        button{
+            color:red;
+        }
+        p{
+            color:yellow;
+        }
+    </style>
+    <body>
+        <div>
+            <input type="text" sf-value="this.message"/>
+            <button sf-innerText="this.buttonName" onclick="this.clickHandler()"></button>
+            <p sf-innerText="this.message"> 
+            </p>
+        </div>
+    </body>
+    <script>
+        this.message = "this is a component";
+        this.buttonName = "click me";
+        this.clickHandler = function(){
+            alert(this.message);
+        };
+    </script>
+</sf-component>
