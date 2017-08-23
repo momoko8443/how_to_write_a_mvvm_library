@@ -1,11 +1,21 @@
 import {Scanner} from "./Scanner";
 import {Watcher} from "./Watcher";
 import {Renderer} from "./Renderer";
+import {Loader} from "./component/Loader";
 export let SegmentFault = class SegmentFault {
     private viewModelPool = {};
     private viewViewModelMap = {};
     private renderer = new Renderer();
     public init() {
+        //web component相关功能的扩展 从此行开始
+        //Hi Scanner,Watch你们俩先别急着监视，扫描,先让我把Componont的定义load进来。
+
+        let loader = new Loader(this.componentPool);
+        loader.load().then( componentDefinitionPool =>{
+            console.log(componentDefinitionPool);
+        });
+
+
         let scanner = new Scanner(this.viewModelPool);
         let watcher = new Watcher(this);
         for (let key in this.viewModelPool) {
@@ -28,5 +38,11 @@ export let SegmentFault = class SegmentFault {
     }
     private viewModelChangedHandler(viewModel,prop) {
         this.refresh(viewModel._alias);
+    }
+
+    //web component相关功能的扩展 从此行开始
+    private componentPool = {};
+    public registerComponent(tagName,path){
+        this.componentPool[tagName] = path;
     }
 }
