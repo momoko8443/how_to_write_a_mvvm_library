@@ -7,14 +7,14 @@
             color:black;
         }
     </style>
-    <body>
+    <template>
         <div>
             <input type="text" sf-value="this.message"/>
             <button sf-innerText="this.buttonName" onclick="this.clickHandler()"></button>
             <p sf-innerText="this.message"> 
             </p>
         </div>
-    </body>
+    </template>
     <script>
         this.message = "this is a component2";
         this.buttonName = "click me 2";

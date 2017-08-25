@@ -1,4 +1,4 @@
-import {ComponentModel} from "./ComponentModel";
+import {ComponentDefinition} from "./ComponentDefinition";
 export class Loader {
     private componentPool;
     private componentDefinitionPool = {};
@@ -21,7 +21,7 @@ export class Loader {
             return promise.then( (result) => {
                 return fetch(comp.path).then((response) => {
                     return response.text().then(definition => {
-                        let def = this.getComponentConfiguration(comp.name,definition);
+                        let def = this.getComponentDefinition(comp.name,definition);
                         this.componentDefinitionPool[comp.name] = def;
                         return this.componentDefinitionPool;
                     });
@@ -32,13 +32,13 @@ export class Loader {
         }));
     }
 
-    private getComponentConfiguration(tagName:string, htmlString: string): ComponentModel {
+    private getComponentDefinition(tagName:string, htmlString: string): ComponentDefinition {
         let tempDom: HTMLElement = document.createElement("div");
         tempDom.innerHTML = htmlString;
-        let body: HTMLElement = tempDom.querySelectorAll("body")[0];
+        let template: string = tempDom.querySelectorAll("template")[0] && tempDom.querySelectorAll("template")[0].innerHTML;
         let script: string = tempDom.querySelectorAll("script")[0] && tempDom.querySelectorAll("script")[0].innerHTML;
         let style: string = tempDom.querySelectorAll( "style")[0] && tempDom.querySelectorAll( "style")[0].innerHTML;
 
-        return new ComponentModel(tagName,style,body,script);
+        return new ComponentDefinition(tagName,style,template,script);
     }
 }
