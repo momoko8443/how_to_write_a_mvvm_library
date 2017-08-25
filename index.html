@@ -11,13 +11,14 @@
             <h4 sf-innerText="vm.message"></h4>
             <button onclick="vm.buttonClickHandler();">click me</button>
         </div>
+        <my-comp></my-comp>
     </body>
     <script src="dist/sf.js"></script>
     <script>
         var sf = new SegmentFault();
         sf.registerViewModel("vm", new ViewModel());
-        sf.registerComponent("myComp","components/myComp.html");
-        sf.registerComponent("myComp2","components/myComp2.html");
+        sf.registerComponent("my-comp","components/myComp.html");
+        sf.registerComponent("my-comp2","components/myComp2.html");
         sf.init();
 
         function ViewModel() {
