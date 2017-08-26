@@ -38,14 +38,26 @@ export class ComponentGenerator {
         let htmlDom = tagElement.previousElementSibling;
         htmlDom.classList.add(tagElement.localName);
         if (compDef.script) {
-            let ViewModelClass: Function = new Function(compDef.script);
-            this.sf.registerViewModel(randomAlias, new ViewModelClass.prototype.constructor());
-
-        } else {
+            let debugComment = "//# sourceURL="+tagElement.tagName+".js";
+            let script = compDef.script + debugComment;
+            let ViewModelClass: Function = new Function(script);
+            let vm_instance = new ViewModelClass.prototype.constructor();
+            this.sf.registerViewModel(randomAlias, vm_instance);
             for (let i = 0; i < attrs.length; i++) {
                 let attr = attrs[i];
-                htmlDom.setAttribute(attr.nodeName, attr.nodeValue);
+                if(attr.nodeName.search("sf-") !== -1){
+                    let setTarget = attr.nodeName.split("-")[1];
+                    vm_instance[setTarget] = eval(attr.nodeValue);
+                }           
             }
+
+        }
+        for (let i = 0; i < attrs.length; i++) {
+            let attr = attrs[i];
+            console.log(attr);
+            if(attr.nodeName.search("sf-") === -1){
+                htmlDom.setAttribute(attr.nodeName, attr.nodeValue);
+            }           
         }
 
         tagElement.parentNode.removeChild(tagElement);

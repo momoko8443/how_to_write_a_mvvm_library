@@ -16,10 +16,16 @@
         </div>
     </template>
     <script>
-        this.message = "this is a component2";
+        //this.message = "this is a component2";
         this.buttonName = "click me 2";
         this.clickHandler = function(){
             alert(this.message);
         };
+
+        Object.defineProperty(this,"msg",{
+            set:function(value){
+                this.message = value;
+            }
+        })
     </script>
 </sf-component>
