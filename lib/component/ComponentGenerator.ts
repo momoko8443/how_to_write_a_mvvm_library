@@ -43,11 +43,24 @@ export class ComponentGenerator {
             let ViewModelClass: Function = new Function(script);
             let vm_instance = new ViewModelClass.prototype.constructor();
             this.sf.registerViewModel(randomAlias, vm_instance);
+
+            vm_instance._dom = htmlDom;
+            vm_instance.dispatchEvent = (eventType: string, data: any, bubbles: boolean = false, cancelable: boolean = true) => {
+                let event = new CustomEvent(eventType.toLowerCase(), { "bubbles": bubbles, "cancelable": cancelable });
+                event['data'] = data;
+                vm_instance._dom.dispatchEvent(event);
+            };
+
             for (let i = 0; i < attrs.length; i++) {
                 let attr = attrs[i];
                 if(attr.nodeName.search("sf-") !== -1){
-                    let setTarget = attr.nodeName.split("-")[1];
-                    vm_instance[setTarget] = eval(attr.nodeValue);
+                    if(attr.nodeName.search("sf-on") !== -1){
+                        let eventName = attr.nodeName.substr(5);
+                        vm_instance._dom.addEventListener(eventName,eval(attr.nodeValue));
+                    }else{
+                        let setTarget = attr.nodeName.split("-")[1];
+                        vm_instance[setTarget] = eval(attr.nodeValue);
+                    }                 
                 }           
             }
 
