@@ -21,6 +21,7 @@
         this.buttonName = "click me";
         this.clickHandler = function(){
             alert(this.message);
+            this.dispatchEvent("customevent","hello world");
         };
         Object.defineProperty(this,"msg",{
             set:function(value){

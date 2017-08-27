@@ -11,7 +11,7 @@
             <h4 sf-innerText="vm.message"></h4>
             <button onclick="vm.buttonClickHandler();">click me</button>
         </div>
-        <my-comp sf-msg="vm.message"></my-comp>
+        <my-comp id="mycomp" sf-msg="vm.message" sf-oncustomevent="vm.customEventHandler"></my-comp>
     </body>
     <script src="dist/sf.js"></script>
     <script>
@@ -19,13 +19,21 @@
         sf.registerViewModel("vm", new ViewModel());
         sf.registerComponent("my-comp","components/myComp.html");
         sf.registerComponent("my-comp2","components/myComp2.html");
-        sf.init();
+        sf.init().then(()=>{
+            document.getElementById("mycomp").addEventListener("customevent",function(e){
+                console.log(e.data);
+            });
+        });
 
         function ViewModel() {
             this.message = "hello, SegmentFault";
             this.buttonClickHandler = function() {
                 this.message = "clicked: " + this.message;
+            };
+            this.customEventHandler = function(e){
+                console.log(e.data);
             }
+            
         }
     </script>
 </html>
