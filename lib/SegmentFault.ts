@@ -9,15 +9,17 @@ export let SegmentFault = class SegmentFault {
     private renderer = new Renderer();
     private generator:ComponentGenerator;
     public init():Promise<any>{
-        //web component相关功能的扩展 从此行开始
-        //Hi Scanner,Watch你们俩先别急着监视，扫描,先让我把Componont的定义load进来。
+
         return new Promise((resolve,reject)=>{
             let loader = new Loader(this.componentPool);
             loader.load().then( componentDefinitionPool =>{
                 console.log(componentDefinitionPool);
-    
-                this.generator = new ComponentGenerator(this,componentDefinitionPool);
-                return this.generator.scanComponent(document);
+                if(componentDefinitionPool){
+                    this.generator = new ComponentGenerator(this,componentDefinitionPool);
+                    return this.generator.scanComponent(document);
+                }else{
+                    return;
+                }
             }).then(()=>{
                 let scanner = new Scanner(this.viewModelPool);
                 let watcher = new Watcher(this);
@@ -46,7 +48,6 @@ export let SegmentFault = class SegmentFault {
         this.refresh(viewModel._alias);
     }
 
-    //web component相关功能的扩展 从此行开始
     private componentPool = {};
     public registerComponent(tagName,path){
         this.componentPool[tagName] = path;

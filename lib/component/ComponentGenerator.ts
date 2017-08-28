@@ -23,9 +23,10 @@ export class ComponentGenerator {
             }
         }
     }
-
     private async generate(tagElement: HTMLElement, compDef: ComponentDefinition, attrs) {
-        this.dealWithShadowStyle(compDef);
+        if(compDef.style){
+            this.dealWithShadowStyle(compDef);
+        }       
         let randomAlias = 'vm_' + Math.floor(10000 * Math.random()).toString();
         let template = compDef.template;
         template = template.replace(new RegExp('this', 'gm'), randomAlias);
@@ -37,11 +38,12 @@ export class ComponentGenerator {
         tagElement.insertAdjacentHTML('beforeBegin' as InsertPosition, template);
         let htmlDom = tagElement.previousElementSibling;
         htmlDom.classList.add(tagElement.localName);
+        let vm_instance;
         if (compDef.script) {
             let debugComment = "//# sourceURL="+tagElement.tagName+".js";
             let script = compDef.script + debugComment;
             let ViewModelClass: Function = new Function(script);
-            let vm_instance = new ViewModelClass.prototype.constructor();
+            vm_instance = new ViewModelClass.prototype.constructor();
             this.sf.registerViewModel(randomAlias, vm_instance);
 
             vm_instance._dom = htmlDom;
@@ -67,7 +69,6 @@ export class ComponentGenerator {
         }
         for (let i = 0; i < attrs.length; i++) {
             let attr = attrs[i];
-            console.log(attr);
             if(attr.nodeName.search("sf-") === -1){
                 htmlDom.setAttribute(attr.nodeName, attr.nodeValue);
             }           
@@ -79,14 +80,19 @@ export class ComponentGenerator {
                 let child = htmlDom.children[j];
                 await this.scanComponent(child);
             }
+            callInit();
             return htmlDom;
         } else {
+            callInit();
             return htmlDom;
         }
+
+        function callInit(){
+            if (vm_instance && vm_instance._init && typeof (vm_instance._init) === 'function') {
+                vm_instance._init();
+            }
+        }
     }
-
-
-
     private dealWithShadowStyle(compDef:ComponentDefinition): void {
         let stylesheet = compDef.style;
         let tagName = compDef.tagName;

@@ -1,0 +1,32 @@
+<html>
+
+<head>
+    <title>Mvvm</title>
+</head>
+
+<body>
+    <H3>MVVM</H3>
+    <div>
+        <input type="text" sf-value="vm.message">
+        <h1 sf-innerText="vm.message"></h1>
+        <h2 sf-innerText="vm.message"></h2>
+        <h3 sf-innerText="vm.message"></h3>
+        <h4 sf-innerText="vm.message"></h4>
+        <button onclick="vm.buttonClickHandler();">click me</button>
+    </div>
+</body>
+<script src="/dist/sf.js"></script>
+<script>
+    var sf = new SegmentFault();
+    sf.registerViewModel("vm", new ViewModel());
+    sf.init();
+
+    function ViewModel() {
+        this.message = "hello, SegmentFault";
+        this.buttonClickHandler = function () {
+            this.message = "clicked: " + this.message;
+        }
+    }
+</script>
+
+</html>
