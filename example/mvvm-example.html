@@ -8,7 +8,7 @@
         this._init = function () {
             var delay;
 
-            $.get("/example/mvvm.code.html", function (result) {
+            $.get(location.href+"/example/mvvm.code.html", function (result) {
                 $("#code").text(result);
                 var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
                     mode: 'text/html',
