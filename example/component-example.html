@@ -46,11 +46,11 @@
     </template>
     <script>
         this._init = function () {
-            $.get("/example/component.main.code.html", function (result) {
+            $.get("example/component.main.code.html", function (result) {
                 $("#main pre code").text(result);
-                $.get("/example/myComp.html", function (result) {
+                $.get("example/myComp.html", function (result) {
                     $("#component1 pre code").text(result);
-                    $.get("/example/myComp2.html", function (result) {
+                    $.get("example/myComp2.html", function (result) {
                         $("#component2 pre code").text(result);
                         $('#myTab a:last').tab('show');
                         $('#myTab a:first').tab('show');
