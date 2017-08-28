@@ -31,7 +31,7 @@
                 </div>
                 <div class="col-md-6">
                     <div>
-                        <input type="text" sf-value="vm.message">
+                        <input type="text" sf-value="this.message">
                         <h1 sf-innerText="this.message"></h1>
                         <h2 sf-innerText="this.message"></h2>
                         <h3 sf-innerText="this.message"></h3>
@@ -46,11 +46,11 @@
     </template>
     <script>
         this._init = function () {
-            $.get("example/component.main.code.html", function (result) {
+            $.get(location.href+"example/component.main.code.html", function (result) {
                 $("#main pre code").text(result);
-                $.get("example/myComp.html", function (result) {
+                $.get(location.href+"example/myComp.html", function (result) {
                     $("#component1 pre code").text(result);
-                    $.get("example/myComp2.html", function (result) {
+                    $.get(location.href+"example/myComp2.html", function (result) {
                         $("#component2 pre code").text(result);
                         $('#myTab a:last').tab('show');
                         $('#myTab a:first').tab('show');
@@ -68,7 +68,7 @@
             this.message = "clicked: " + this.message;
         };
         this.customEventHandler = function(e){
-            console.log(e.data);
+            alert(e.data)
         }
     </script>
 </sf-component>
