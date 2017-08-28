@@ -1,0 +1,74 @@
+<sf-component>
+    <template>
+        <div class="container-fluid" style="padding-top:20px">
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist" id="myTab">
+                        <li role="presentation" class="active"><a href="#main" aria-controls="main" role="tab" data-toggle="tab">index.html</a></li>
+                        <li role="presentation"><a href="#component1" aria-controls="component1" role="tab" data-toggle="tab">myComp.html</a></li>
+                        <li role="presentation"><a href="#component2" aria-controls="component2" role="tab" data-toggle="tab">myComp2.html</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="main">
+                            <pre>
+                                <code class="html"></code>
+                            </pre>
+                        </div>
+                        <div role="tabpanel" class="tab-pane active" id="component1">
+                            <pre>
+                                <code class="html"></code>
+                            </pre>
+                        </div>
+                        <div role="tabpanel" class="tab-pane active" id="component2">
+                            <pre>
+                                <code class="html"></code>
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div>
+                        <input type="text" sf-value="vm.message">
+                        <h1 sf-innerText="this.message"></h1>
+                        <h2 sf-innerText="this.message"></h2>
+                        <h3 sf-innerText="this.message"></h3>
+                        <h4 sf-innerText="this.message"></h4>
+                        <button onclick="this.buttonClickHandler();">click me</button>
+                    </div>
+                    <hr>
+                    <my-comp id="mycomp" sf-msg="this.message" sf-oncustomevent="this.customEventHandler"></my-comp>
+                </div>
+            </div>
+        </div>
+    </template>
+    <script>
+        this._init = function () {
+            $.get("/example/component.main.code.html", function (result) {
+                $("#main pre code").text(result);
+                $.get("/example/myComp.html", function (result) {
+                    $("#component1 pre code").text(result);
+                    $.get("/example/myComp2.html", function (result) {
+                        $("#component2 pre code").text(result);
+                        $('#myTab a:last').tab('show');
+                        $('#myTab a:first').tab('show');
+                        $(document).ready(function() {
+                            $('pre code').each(function(i, block) {
+                                hljs.highlightBlock(block);
+                            });
+                        });
+                    })
+                })
+            });
+        };
+        this.message = "hello, SegmentFault";
+        this.buttonClickHandler = function() {
+            this.message = "clicked: " + this.message;
+        };
+        this.customEventHandler = function(e){
+            console.log(e.data);
+        }
+    </script>
+</sf-component>

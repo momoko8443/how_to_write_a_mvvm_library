@@ -1,0 +1,38 @@
+<sf-component>
+    <template>
+        <textarea id="code">
+        </textarea>
+        <iframe id=preview></iframe>
+    </template>
+    <script>
+        this._init = function () {
+            var delay;
+
+            $.get("/example/mvvm.code.html", function (result) {
+                $("#code").text(result);
+                var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+                    mode: 'text/html',
+                    autoCloseTags: true,
+                    lineNumbers: true,
+                    theme: "monokai",
+                    tabSize: 2
+                });
+                editor.on("change", function () {
+                    clearTimeout(delay);
+                    delay = setTimeout(updatePreview, 300);
+                });
+
+                function updatePreview() {
+                    var previewFrame = document.getElementById('preview');
+                    var preview = previewFrame.contentDocument || previewFrame.contentWindow.document;
+                    preview.open();
+                    preview.write(editor.getValue());
+                    preview.close();
+                }
+                setTimeout(updatePreview, 300);
+            });
+
+
+        }
+    </script>
+</sf-component>

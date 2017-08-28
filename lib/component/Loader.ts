@@ -5,7 +5,6 @@ export class Loader {
     constructor(componentPool) {
         this.componentPool = componentPool;
     }
-
     public load(): Promise<any> {
         let compArray = [];
         for (var tagName in this.componentPool) {
@@ -15,7 +14,6 @@ export class Loader {
             return result;
         });
     }
-
     private doAsyncSeries(componentArray): Promise<any> {
         return componentArray.reduce( (promise, comp) =>{
             return promise.then( (result) => {
@@ -31,7 +29,6 @@ export class Loader {
             resolve();
         }));
     }
-
     private getComponentDefinition(tagName:string, htmlString: string): ComponentDefinition {
         let tempDom: HTMLElement = document.createElement("div");
         tempDom.innerHTML = htmlString;

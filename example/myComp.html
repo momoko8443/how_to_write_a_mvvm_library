@@ -1,0 +1,40 @@
+<sf-component>
+    <style>
+        button {
+            color: red;
+        }
+
+        p {
+            color: red;
+        }
+
+        .compClass {
+            border: 1px solid red;
+        }
+    </style>
+    <template>
+        <div>
+            <div class="compClass">
+                <input type="text" sf-value="this.message" />
+                <button sf-innerText="this.buttonName" onclick="this.clickHandler()"></button>
+                <my-comp2 sf-msg="this.message"></my-comp2>
+                <p sf-innerText="this.message + ', hi Component1'">
+                </p>
+            </div>
+        </div>
+    </template>
+    <script>
+        this.buttonName = "click me";
+        this.clickHandler = function () {
+            alert(this.message);
+            this.dispatchEvent("customevent", "hello world");
+        };
+        Object.defineProperty(this, "msg", {
+            set: function (value) {
+                if (value) {
+                    this.message = value;
+                }
+            }
+        });
+    </script>
+</sf-component>

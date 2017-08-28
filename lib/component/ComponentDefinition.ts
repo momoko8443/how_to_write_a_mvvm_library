@@ -9,7 +9,6 @@ export class ComponentDefinition{
         this.template = template;
         this.script = script;
     }
-
     public generateRealComponent(){
         
     }

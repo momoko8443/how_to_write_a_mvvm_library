@@ -1,39 +1,73 @@
-<html>
-    <head>
-        <title>Mvvm</title>
-    </head>
-    <body>
-        <div>
-            <input type="text" sf-value="vm.message">
-            <h1 sf-innerText="vm.message"></h1>
-            <h2 sf-innerText="vm.message"></h2>
-            <h3 sf-innerText="vm.message"></h3>
-            <h4 sf-innerText="vm.message"></h4>
-            <button onclick="vm.buttonClickHandler();">click me</button>
-        </div>
-        <my-comp id="mycomp" sf-msg="vm.message" sf-oncustomevent="vm.customEventHandler"></my-comp>
-    </body>
-    <script src="dist/sf.js"></script>
-    <script>
-        var sf = new SegmentFault();
-        sf.registerViewModel("vm", new ViewModel());
-        sf.registerComponent("my-comp","components/myComp.html");
-        sf.registerComponent("my-comp2","components/myComp2.html");
-        sf.init().then(()=>{
-            document.getElementById("mycomp").addEventListener("customevent",function(e){
-                console.log(e.data);
-            });
-        });
+<!DOCTYPE
+html>
 
-        function ViewModel() {
-            this.message = "hello, SegmentFault";
-            this.buttonClickHandler = function() {
-                this.message = "clicked: " + this.message;
-            };
-            this.customEventHandler = function(e){
-                console.log(e.data);
-            }
-            
+<html>
+
+<head>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/codemirror/5.28.0/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/codemirror/5.28.0/theme/monokai.css">
+    <link href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/monokai.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/codemirror/5.28.0/codemirror.min.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.28.0/addon/edit/closetag.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.28.0/addon/fold/xml-fold.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.28.0/mode/xml/xml.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.28.0/mode/javascript/javascript.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.28.0/mode/css/css.js"></script>
+    <script src="node_modules/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/languages/xml.min.js"></script>
+    <style type=text/css>
+        .CodeMirror {
+            float: left;
+            width: 50%;
+            height: 500px;
+            border: 1px solid black;
         }
-    </script>
+
+        #preview {
+            width: 49%;
+            float: left;
+            height: 500px;
+            border: 1px solid black;
+            border-left: 0px;
+        }
+    </style>
+    <title>CodeMirrorTest</title>
+</head>
+
+<body>
+    <div>
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#mvvm" aria-controls="mvvm" role="tab" data-toggle="tab">MVVM</a></li>
+            <li role="presentation"><a href="#component" aria-controls="component" role="tab" data-toggle="tab">Component</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="mvvm">
+               <mvvm-example></mvvm-example>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="component">
+                <comp-example></comp-example>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="./dist/sf.js">hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript">
+    var sf = new SegmentFault();
+    sf.registerComponent("mvvm-example","./example/mvvm-example.html");
+    sf.registerComponent("comp-example","./example/component-example.html");
+    sf.registerComponent("my-comp","./example/myComp.html");
+    sf.registerComponent("my-comp2","./example/myComp2.html");
+    sf.init().then(function(){
+
+    });
+</script>
+
 </html>
